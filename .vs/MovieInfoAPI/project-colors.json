@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "04bec0a5-fd67-4271-b64f-f47089f9bab0": {
+      "ProjectGuid": "04bec0a5-fd67-4271-b64f-f47089f9bab0",
+      "DisplayName": "MovieInfoAPI",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

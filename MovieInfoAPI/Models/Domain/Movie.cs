@@ -1,13 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
+using System;
 
-namespace MovieCharacters.Model.Domain
+namespace MovieInfoAPI.Models.Domain
 {
     [Table("Movie")]
     public class Movie
     {
-        public int Id { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid MovieId { get; set; }
         [Required, MaxLength(250)]
         public string Title { get; set; }
         [Required, MaxLength(50)]
@@ -18,7 +20,7 @@ namespace MovieCharacters.Model.Domain
         public string Director { get; set; }
         public string Picture { get; set; }
         public string Trailer { get; set; }
-        public ICollection<Character> characters { get; set; }
-        public int FranchiseId { get; set; }
+        public ICollection<Character> Characters { get; set; }
+        public Franchise Franchise { get; set; }
     }
 }
