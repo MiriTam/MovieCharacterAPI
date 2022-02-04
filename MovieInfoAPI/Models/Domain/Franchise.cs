@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
-using System;
 
 namespace MovieInfoAPI.Models.Domain
 {
@@ -9,7 +8,7 @@ namespace MovieInfoAPI.Models.Domain
     public class Franchise
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid FranchiseId { get; set; }
+        public int FranchiseId { get; set; }
         [Required, MaxLength(50)]
         public string Name { get; set; }
         [Required, MaxLength(255)]

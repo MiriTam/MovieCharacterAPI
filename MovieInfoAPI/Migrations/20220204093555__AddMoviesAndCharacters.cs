@@ -21,11 +21,11 @@ namespace MovieInfoAPI.Migrations
                     columns: new[] { "MovieId", "Title", "Genre", "ReleaseYear", "Director", "FranchiseId" },
                     values: new object[,]
                     {
-                        { Guid.NewGuid(), "Harry Potter and the Philosopher's Stone", "Fantasy", 2001, "Chris Columbus", hp.FranchiseId },
-                        { Guid.NewGuid(), "Harry Potter and the Goblet of Fire", "Fantasy", 2005, "Mike Newell", hp.FranchiseId },
-                        { Guid.NewGuid(), "Harry Potter and the Deathly Hallows", "Fantasy", 2011, "David Yates", hp.FranchiseId },
-                        { Guid.NewGuid(), "The Fellowship of the Ring", "Fantasy", 2001, "Peter Jackson", lotr.FranchiseId },
-                        { Guid.NewGuid(), "The Two Towers", "Fantasy", 2002, "Peter Jackson", lotr.FranchiseId }
+                        { 1, "Harry Potter and the Philosopher's Stone", "Fantasy", 2001, "Chris Columbus", hp.FranchiseId },
+                        { 2, "Harry Potter and the Goblet of Fire", "Fantasy", 2005, "Mike Newell", hp.FranchiseId },
+                        { 3, "Harry Potter and the Deathly Hallows", "Fantasy", 2011, "David Yates", hp.FranchiseId },
+                        { 4, "The Fellowship of the Ring", "Fantasy", 2001, "Peter Jackson", lotr.FranchiseId },
+                        { 5, "The Two Towers", "Fantasy", 2002, "Peter Jackson", lotr.FranchiseId }
                     });
 
                 migrationBuilder.InsertData(
@@ -33,12 +33,12 @@ namespace MovieInfoAPI.Migrations
                     columns: new[] { "CharacterId", "Name", "Alias", "Gender" },
                     values: new object[,]
                     {
-                        { Guid.NewGuid(), "Samwise Gamgee", "Sam", "Male" },
-                        { Guid.NewGuid(), "Galadriel", "Lady of Ligth", "Female" },
-                        { Guid.NewGuid(), "Gandalf", "The Gray", "Male" },
-                        { Guid.NewGuid(), "Hermione Granger", "The smartest witch her age", "Female" },
-                        { Guid.NewGuid(), "Hedwig", "Snow goddess of the skies", "Female" },
-                        { Guid.NewGuid(), "Dobby", "A free elf", "Male" }
+                        { 1, "Samwise Gamgee", "Sam", "Male" },
+                        { 2, "Galadriel", "Lady of Ligth", "Female" },
+                        { 3, "Gandalf", "The Gray", "Male" },
+                        { 4, "Hermione Granger", "The smartest witch her age", "Female" },
+                        { 5, "Hedwig", "Snow goddess of the skies", "Female" },
+                        { 6, "Dobby", "A free elf", "Male" }
                     });
             }
         }

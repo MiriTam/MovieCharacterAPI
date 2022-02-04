@@ -22,13 +22,13 @@ namespace MovieInfoAPI.Model
         {
             Franchise lotr = new Franchise()
             {
-                FranchiseId = Guid.NewGuid(),
+                FranchiseId = 1,
                 Name = "The Lord of the Rings",
                 Description = "Trilogy based on the books written by J.R.R. Tolkien."
             };
             Franchise hp = new Franchise
             {
-                FranchiseId = Guid.NewGuid(),
+                FranchiseId = 2,
                 Name = "Harry Potter",
                 Description = "Series based on the books written by J.K. Rowling."
             };

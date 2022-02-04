@@ -21,11 +21,11 @@ namespace MovieInfoAPI.Migrations
 
             modelBuilder.Entity("CharacterMovie", b =>
                 {
-                    b.Property<Guid>("CharactersCharacterId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CharactersCharacterId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("MoviesMovieId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("MoviesMovieId")
+                        .HasColumnType("int");
 
                     b.HasKey("CharactersCharacterId", "MoviesMovieId");
 
@@ -36,18 +36,19 @@ namespace MovieInfoAPI.Migrations
 
             modelBuilder.Entity("MovieInfoAPI.Models.Domain.Character", b =>
                 {
-                    b.Property<Guid>("CharacterId")
+                    b.Property<int>("CharacterId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Alias")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -64,9 +65,10 @@ namespace MovieInfoAPI.Migrations
 
             modelBuilder.Entity("MovieInfoAPI.Models.Domain.Franchise", b =>
                 {
-                    b.Property<Guid>("FranchiseId")
+                    b.Property<int>("FranchiseId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -85,13 +87,13 @@ namespace MovieInfoAPI.Migrations
                     b.HasData(
                         new
                         {
-                            FranchiseId = new Guid("1c816099-c827-4a28-ab64-f152dc44ba13"),
+                            FranchiseId = 1,
                             Description = "Trilogy based on the books written by J.R.R. Tolkien.",
                             Name = "The Lord of the Rings"
                         },
                         new
                         {
-                            FranchiseId = new Guid("a6c6bad1-aaee-4c5c-9f40-1b45e2c3fe3c"),
+                            FranchiseId = 2,
                             Description = "Series based on the books written by J.K. Rowling.",
                             Name = "Harry Potter"
                         });
@@ -99,17 +101,18 @@ namespace MovieInfoAPI.Migrations
 
             modelBuilder.Entity("MovieInfoAPI.Models.Domain.Movie", b =>
                 {
-                    b.Property<Guid>("MovieId")
+                    b.Property<int>("MovieId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Director")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid?>("FranchiseId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("FranchiseId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Genre")
                         .IsRequired()

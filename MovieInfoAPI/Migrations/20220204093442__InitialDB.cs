@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MovieInfoAPI.Migrations
 {
@@ -11,10 +10,11 @@ namespace MovieInfoAPI.Migrations
                 name: "Character",
                 columns: table => new
                 {
-                    CharacterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CharacterId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Alias = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Alias = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
                     URL = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -26,7 +26,8 @@ namespace MovieInfoAPI.Migrations
                 name: "Franchise",
                 columns: table => new
                 {
-                    FranchiseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FranchiseId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
                 },
@@ -39,14 +40,15 @@ namespace MovieInfoAPI.Migrations
                 name: "Movie",
                 columns: table => new
                 {
-                    MovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MovieId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     Genre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ReleaseYear = table.Column<int>(type: "int", nullable: false),
                     Director = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Picture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Trailer = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FranchiseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    FranchiseId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -63,8 +65,8 @@ namespace MovieInfoAPI.Migrations
                 name: "CharacterMovie",
                 columns: table => new
                 {
-                    CharactersCharacterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MoviesMovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CharactersCharacterId = table.Column<int>(type: "int", nullable: false),
+                    MoviesMovieId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,12 +88,12 @@ namespace MovieInfoAPI.Migrations
             migrationBuilder.InsertData(
                 table: "Franchise",
                 columns: new[] { "FranchiseId", "Description", "Name" },
-                values: new object[] { new Guid("775aa828-646f-4ff5-9abf-08870cc90f1f"), "Trilogy based on the books written by J.R.R. Tolkien.", "The Lord of the Rings" });
+                values: new object[] { 1, "Trilogy based on the books written by J.R.R. Tolkien.", "The Lord of the Rings" });
 
             migrationBuilder.InsertData(
                 table: "Franchise",
                 columns: new[] { "FranchiseId", "Description", "Name" },
-                values: new object[] { new Guid("895fb28b-d2d4-44a2-ad5a-c6fa0f243079"), "Series based on the books written by J.K. Rowling.", "Harry Potter" });
+                values: new object[] { 2, "Series based on the books written by J.K. Rowling.", "Harry Potter" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CharacterMovie_MoviesMovieId",

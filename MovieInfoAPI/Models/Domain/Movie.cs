@@ -9,7 +9,7 @@ namespace MovieInfoAPI.Models.Domain
     public class Movie
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid MovieId { get; set; }
+        public int MovieId { get; set; }
         [Required, MaxLength(250)]
         public string Title { get; set; }
         [Required, MaxLength(50)]

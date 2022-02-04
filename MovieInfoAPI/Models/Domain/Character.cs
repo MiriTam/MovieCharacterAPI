@@ -9,12 +9,12 @@ namespace MovieInfoAPI.Models.Domain
     public class Character
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid CharacterId { get; set; }
+        public int CharacterId { get; set; }
         [Required, MaxLength(50)]
         public string Name { get; set; }
-        [Required, MaxLength(50)]
+        [MaxLength(50)]
         public string Alias { get; set; }
-        [Required]
+        [Required, MaxLength(6)]
         public string Gender { get; set; }
         public string URL { get; set; }
         public ICollection<Movie> Movies { get; set; }
