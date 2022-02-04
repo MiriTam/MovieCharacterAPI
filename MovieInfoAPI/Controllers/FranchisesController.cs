@@ -25,6 +25,10 @@ namespace MovieInfoAPI.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Method fetches all franchises in the database.
+        /// </summary>
+        /// <returns>List of franchises.</returns>
         // GET: api/Franchises
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Franchise>>> GetFranchises()
@@ -32,6 +36,12 @@ namespace MovieInfoAPI.Controllers
             return await _context.Franchises.ToListAsync();
         }
 
+        /// <summary>
+        /// Method fetches the movie from the database with the given id.
+        /// If no movie is found, the method returns the Not found error.
+        /// </summary>
+        /// <param name="id">Movie id.</param>
+        /// <returns>Movie with given id.</returns>
         // GET: api/Franchises/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Franchise>> GetFranchise(int id)
@@ -44,8 +54,17 @@ namespace MovieInfoAPI.Controllers
             return Ok(franchise);
         }
 
+        /// <summary>
+        /// Method updates the movie with the given id using the values
+        /// in the given movie object. Returns status bad request if the 
+        /// given id does not match id in the new object.
+        /// </summary>
+        /// <param name="id">Id of movie.</param>
+        /// <param name="movie">
+        /// Movie object with new values.
+        /// </param>
+        /// <returns>No content</returns>
         // PUT: api/Franchises/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFranchise(int id, Franchise franchise)
         {
@@ -73,8 +92,12 @@ namespace MovieInfoAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Method creates a new franchise record in the database.
+        /// </summary>
+        /// <param name="movie">New franchise object.</param>
+        /// <returns>Status created and new movie.</returns>
         // POST: api/Franchises
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Franchise>> PostFranchise(Franchise franchise)
         {
@@ -83,6 +106,13 @@ namespace MovieInfoAPI.Controllers
             return CreatedAtAction("GetFranchise", new { id = franchise.FranchiseId }, franchise);
         }
 
+        /// <summary>
+        /// Method deletes the franchise record with the given id from
+        /// the database. If id is not in database, method returns 
+        /// status not found.
+        /// </summary>
+        /// <param name="id">Id of franchise to be deleted.</param>
+        /// <returns>Status no content.</returns>
         // DELETE: api/Franchises/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFranchise(int id)
@@ -98,6 +128,15 @@ namespace MovieInfoAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Method takes a franchise id and a set of movie ids of an existing franchise and
+        /// existing movies. Then it finds the franchise and movies in the database
+        /// and adds the movies to the franchise. If the ids do not match any 
+        /// database records, the method returns status code not found.
+        /// </summary>
+        /// <param name="id">Id of franchise.</param>
+        /// <param name="movieIds">Ids of movies.</param>
+        /// <returns>List of movies that were added to the franchise.</returns>
         [HttpPut("{id}/movies")]
         public async Task<IActionResult> AddMovieToFranchise(int id, int[] movieIds)
         {
@@ -122,6 +161,12 @@ namespace MovieInfoAPI.Controllers
             return Ok(franchise.Movies);
         }
 
+        /// <summary>
+        /// Method takes the id of a franchise and returns a list of all the 
+        /// movies that belong to that franchise.
+        /// </summary>
+        /// <param name="id">Id of franchise.</param>
+        /// <returns>List of movies.</returns>
         [HttpGet("{id}/movies")]
         public async Task<IActionResult> GetMoviesInFranchise(int id)
         {
@@ -137,11 +182,19 @@ namespace MovieInfoAPI.Controllers
             };
         }
 
+        /// <summary>
+        /// Method takes the id of a franchise and fetches all characters that are
+        /// part of a movie, that are part of that franchise. If the id does not match 
+        /// any recorded franchises, the method returns status not found.
+        /// </summary>
+        /// <param name="id">Id of franchise.</param>
+        /// <returns>List of characters.</returns>
         [HttpGet("{id}/characters")]
         public async Task<IActionResult> GetCharactersInFranchise(int id)
         {
             Franchise franchise = await _context.Franchises
-                .Include(f => f.Movies).ThenInclude(m => m.Characters).FirstOrDefaultAsync(f => f.FranchiseId == id);
+                .Include(f => f.Movies).ThenInclude(m => m.Characters)
+                .FirstOrDefaultAsync(f => f.FranchiseId == id);
             if (franchise == null)
             {
                 return NotFound();
@@ -157,7 +210,12 @@ namespace MovieInfoAPI.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Method takes in an id and checks if there are any franchises in the 
+        /// database with that id.
+        /// </summary>
+        /// <param name="id">Id of franchise.</param>
+        /// <returns>Boolean indicating if franchise is in database or not.</returns>
         private bool FranchiseExists(int id)
         {
             return _context.Franchises.Any(e => e.FranchiseId == id);

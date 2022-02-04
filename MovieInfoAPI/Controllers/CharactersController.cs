@@ -24,6 +24,10 @@ namespace MovieInfoAPI.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Method fetches all characters in the database.
+        /// </summary>
+        /// <returns>List of characters.</returns>
         // GET: api/Characters
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Character>>> GetCharacters()
@@ -31,6 +35,12 @@ namespace MovieInfoAPI.Controllers
             return await _context.Characters.ToListAsync();
         }
 
+        /// <summary>
+        /// Method fetches the character from the database with the given id.
+        /// If no character is found, the method returns a not found error.
+        /// </summary>
+        /// <param name="id">Character id.</param>
+        /// <returns>Character with given id.</returns>
         // GET: api/Characters/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Character>> GetCharacters(int id)
@@ -43,6 +53,16 @@ namespace MovieInfoAPI.Controllers
             return character;
         }
 
+        /// <summary>
+        /// Method updates the character with the given id using the values
+        /// in the given character object. Returns status bad request if the 
+        /// given id does not match id in the new object.
+        /// </summary>
+        /// <param name="id">Id of character.</param>
+        /// <param name="character">
+        /// Character object with new values.
+        /// </param>
+        /// <returns>No content</returns>
         // PUT: api/Characters/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCharacter(int id, Character character)
@@ -70,6 +90,11 @@ namespace MovieInfoAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Method creates a new character record in the database.
+        /// </summary>
+        /// <param name="character">New character object.</param>
+        /// <returns>Status created and new character.</returns>
         // POST: api/Characters
         [HttpPost]
         public async Task<ActionResult<Character>> PostCharacter(Character character)
@@ -79,6 +104,13 @@ namespace MovieInfoAPI.Controllers
             return CreatedAtAction(nameof(GetCharacters), new { id = character.CharacterId }, character);
         }
 
+        /// <summary>
+        /// Method deletes the character record with the given id from
+        /// the database. If id is not in database, method returns 
+        /// status not found.
+        /// </summary>
+        /// <param name="id">Id of character to be deleted.</param>
+        /// <returns>Status no content.</returns>
         // DELETE: api/Characters/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCharacter(int id)
@@ -93,6 +125,12 @@ namespace MovieInfoAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Method takes in an id and checks if there are any characters in the 
+        /// database with that id.
+        /// </summary>
+        /// <param name="id">Id of character.</param>
+        /// <returns>Boolean indicating if character is in database or not.</returns>
         private bool CharacterExists(int id)
         {
             return _context.Characters.Any(e => e.CharacterId == id);

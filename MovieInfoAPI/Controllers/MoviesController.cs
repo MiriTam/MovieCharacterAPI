@@ -25,6 +25,10 @@ namespace MovieInfoAPI.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Method fetches all movies in the database.
+        /// </summary>
+        /// <returns>List of all movies in the database.</returns>
         // GET: api/Movies
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
@@ -32,6 +36,12 @@ namespace MovieInfoAPI.Controllers
             return await _context.Movies.ToListAsync();
         }
 
+        /// <summary>
+        /// Method fetches the movie from the database with the given id.
+        /// If no movie is found, the method returns the Not found error.
+        /// </summary>
+        /// <param name="id">Id of movie to be fetched.</param>
+        /// <returns>Movie with given id.</returns>
         // GET: api/Movies/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Movie>> GetMovie(int id)
@@ -46,6 +56,16 @@ namespace MovieInfoAPI.Controllers
             return movie;
         }
 
+        /// <summary>
+        /// Method updates the movie with the given id using the values
+        /// in the given movie object. Returns status bad request if the 
+        /// given id does not match id in the new object.
+        /// </summary>
+        /// <param name="id">Id of movie to be updated.</param>
+        /// <param name="movie">
+        /// Movie object with values used to update the movie in the database.
+        /// </param>
+        /// <returns>No content</returns>
         // PUT: api/Movies/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovie(int id, Movie movie)
@@ -75,6 +95,11 @@ namespace MovieInfoAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Method creates a new movie record in the database.
+        /// </summary>
+        /// <param name="movie">Movie object to be stored.</param>
+        /// <returns>Status created and the new movie.</returns>
         // POST: api/Movies
         [HttpPost]
         public async Task<ActionResult<Movie>> PostMovie(Movie movie)
@@ -84,6 +109,13 @@ namespace MovieInfoAPI.Controllers
             return CreatedAtAction("GetMovie", new { id = movie.MovieId }, movie);
         }
 
+        /// <summary>
+        /// Method deletes the movie record with the given id from
+        /// the database. If id is not in database, method returns 
+        /// status not found.
+        /// </summary>
+        /// <param name="id">Id of movie to be deleted.</param>
+        /// <returns>Status no content.</returns>
         // DELETE: api/Movies/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovie(int id)
@@ -100,6 +132,15 @@ namespace MovieInfoAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Method takes a movie id and a set of character ids of an existing movie and
+        /// existing characters. Then it finds the movie and characters in the database
+        /// and adds the characters to the movie. If the ids do not match any 
+        /// database records, the method returns status code not found.
+        /// </summary>
+        /// <param name="id">Id of movie.</param>
+        /// <param name="characterIds">Ids of characters.</param>
+        /// <returns>List of characters that were added to the movie.</returns>
         [HttpPut("{id}/characters")]
         public async Task<IActionResult> AddCharacterToMovie(int id, int[] characterIds)
         {
@@ -123,8 +164,14 @@ namespace MovieInfoAPI.Controllers
             return Ok(movie.Characters);
         }
 
+        /// <summary>
+        /// Method takes the id of a movie and returns a list of all the 
+        /// characters that belong to that movie.
+        /// </summary>
+        /// <param name="id">Id of movie.</param>
+        /// <returns>List of characters.</returns>
         [HttpGet("{id}/characters")]
-        public async Task<ActionResult<Movie>> GetGetCharactersInMovie(int id)
+        public async Task<ActionResult<Movie>> GetCharactersInMovie(int id)
         {
             Movie movie = await _context.Movies
                 .Include(m => m.Characters).FirstOrDefaultAsync(m => m.MovieId == id);
@@ -138,6 +185,12 @@ namespace MovieInfoAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Method takes a movie id and checks if a moie with that id
+        /// exists in the database.
+        /// </summary>
+        /// <param name="id">Movie id.</param>
+        /// <returns>Boolean indicating if movie is in database or not.</returns>
         private bool MovieExists(int id)
         {
             return _context.Movies.Any(e => e.MovieId == id);
