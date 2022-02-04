@@ -103,7 +103,8 @@ namespace MovieInfoAPI.Controllers
         [HttpPut("{id}/characters")]
         public async Task<IActionResult> AddCharacterToMovie(int id, int[] characterIds)
         {
-            Movie movie = await _context.Movies.FindAsync(id);
+            Movie movie = await _context.Movies
+                .Include(m => m.Characters).FirstOrDefaultAsync(m => m.MovieId ==id);
             if (movie == null)
             {
                 return NotFound();
@@ -119,21 +120,21 @@ namespace MovieInfoAPI.Controllers
                     movie.Characters.Add(character);
                 }
             }
-            return Ok(movie);
+            return Ok(movie.Characters);
         }
 
         [HttpGet("{id}/characters")]
-        public async Task<IActionResult> GetGetCharactersInMovie(int id)
+        public async Task<ActionResult<Movie>> GetGetCharactersInMovie(int id)
         {
-            Movie movie = await _context.Movies.FindAsync(id);
+            Movie movie = await _context.Movies
+                .Include(m => m.Characters).FirstOrDefaultAsync(m => m.MovieId == id);
             if (movie == null)
             {
                 return NotFound();
             }
             else
             {
-                List<Character> characters = movie.Characters.ToList();
-                return Ok(characters);
+                return Ok(movie.Characters);
             }
         }
 

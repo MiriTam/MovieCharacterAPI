@@ -101,7 +101,8 @@ namespace MovieInfoAPI.Controllers
         [HttpPut("{id}/movies")]
         public async Task<IActionResult> AddMovieToFranchise(int id, int[] movieIds)
         {
-            Franchise franchise = await _context.Franchises.FindAsync(id);
+            Franchise franchise = await _context.Franchises
+                .Include(f => f.Movies).FirstOrDefaultAsync(f => f.FranchiseId == id);
             if (franchise == null)
             {
                 return NotFound();
@@ -118,27 +119,29 @@ namespace MovieInfoAPI.Controllers
                     franchise.Movies.Add(movie);
                 }
             }
-            return Ok(franchise);
+            return Ok(franchise.Movies);
         }
 
         [HttpGet("{id}/movies")]
         public async Task<IActionResult> GetMoviesInFranchise(int id)
         {
-            Franchise franchise = await _context.Franchises.FindAsync(id);
+            Franchise franchise = await _context.Franchises
+                .Include(f => f.Movies).FirstOrDefaultAsync(f => f.FranchiseId == id);
             if (franchise == null)
             {
                 return NotFound();
-            } else
-            {
-                List<Movie> movies = franchise.Movies.ToList();
-                return Ok(movies);
             }
+            else
+            {
+                return Ok(franchise.Movies);
+            };
         }
 
         [HttpGet("{id}/characters")]
         public async Task<IActionResult> GetCharactersInFranchise(int id)
         {
-            Franchise franchise = await _context.Franchises.FindAsync(id);
+            Franchise franchise = await _context.Franchises
+                .Include(f => f.Movies).ThenInclude(m => m.Characters).FirstOrDefaultAsync(f => f.FranchiseId == id);
             if (franchise == null)
             {
                 return NotFound();
