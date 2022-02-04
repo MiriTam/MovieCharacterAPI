@@ -7,7 +7,7 @@ namespace MovieInfoAPI.Models.Domain
     [Table("Franchise")]
     public class Franchise
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int FranchiseId { get; set; }
         [Required, MaxLength(50)]
         public string Name { get; set; }

@@ -10,7 +10,7 @@ using MovieInfoAPI.Model;
 namespace MovieInfoAPI.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    [Migration("20220204093442__InitialDB")]
+    [Migration("20220204122106__InitialDB")]
     partial class _InitialDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

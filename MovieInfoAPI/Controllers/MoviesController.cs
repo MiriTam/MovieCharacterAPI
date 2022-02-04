@@ -27,14 +27,14 @@ namespace MovieInfoAPI.Controllers
 
         // GET: api/Movies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MovieDTO>>> GetMovies()
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
-            return _mapper.Map<List<MovieDTO>>(await _context.Movies.ToListAsync());
+            return await _context.Movies.ToListAsync();
         }
 
         // GET: api/Movies/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<MovieDTO>> GetMovie(int id)
+        public async Task<ActionResult<Movie>> GetMovie(int id)
         {
             var movie = await _context.Movies.FindAsync(id);
 
@@ -43,7 +43,7 @@ namespace MovieInfoAPI.Controllers
                 return NotFound();
             }
 
-            return _mapper.Map<MovieDTO>(movie);
+            return movie;
         }
 
         // PUT: api/Movies/5
@@ -77,11 +77,11 @@ namespace MovieInfoAPI.Controllers
 
         // POST: api/Movies
         [HttpPost]
-        public async Task<ActionResult<MovieDTO>> PostMovie(Movie movie)
+        public async Task<ActionResult<Movie>> PostMovie(Movie movie)
         {
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetMovie", new { id = movie.MovieId }, _mapper.Map<MovieDTO>(movie));
+            return CreatedAtAction("GetMovie", new { id = movie.MovieId }, movie);
         }
 
         // DELETE: api/Movies/5
@@ -119,7 +119,7 @@ namespace MovieInfoAPI.Controllers
                     movie.Characters.Add(character);
                 }
             }
-            return Ok(_mapper.Map<MovieDTO>(movie));
+            return Ok(movie);
         }
 
         [HttpGet("{id}/characters")]
@@ -133,7 +133,7 @@ namespace MovieInfoAPI.Controllers
             else
             {
                 List<Character> characters = movie.Characters.ToList();
-                return Ok(_mapper.Map<List<CharacterDTO>>(characters));
+                return Ok(characters);
             }
         }
 

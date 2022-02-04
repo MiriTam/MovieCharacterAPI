@@ -10,7 +10,7 @@ using MovieInfoAPI.Model;
 namespace MovieInfoAPI.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    [Migration("20220204093555__AddMoviesAndCharacters")]
+    [Migration("20220204122129__AddMoviesAndCharacters")]
     partial class _AddMoviesAndCharacters
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

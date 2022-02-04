@@ -26,23 +26,21 @@ namespace MovieInfoAPI.Controllers
 
         // GET: api/Characters
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CharacterDTO>>> GetCharacters()
+        public async Task<ActionResult<IEnumerable<Character>>> GetCharacters()
         {
-            return _mapper.Map<List<CharacterDTO>>(await _context.Characters.ToListAsync());
+            return await _context.Characters.ToListAsync();
         }
 
         // GET: api/Characters/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CharacterDTO>> GetCharacters(int id)
+        public async Task<ActionResult<Character>> GetCharacters(int id)
         {
             var character = await _context.Characters.FindAsync(id);
-
             if (character == null)
             {
                 return NotFound();
             }
-
-            return _mapper.Map<CharacterDTO>(character);
+            return character;
         }
 
         // PUT: api/Characters/5
@@ -53,9 +51,7 @@ namespace MovieInfoAPI.Controllers
             {
                 return BadRequest();
             }
-
             _context.Entry(character).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -76,12 +72,11 @@ namespace MovieInfoAPI.Controllers
 
         // POST: api/Characters
         [HttpPost]
-        public async Task<ActionResult<CharacterDTO>> PostCharacter(Character character)
+        public async Task<ActionResult<Character>> PostCharacter(Character character)
         {
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCharacter", new { id = character.CharacterId }, _mapper.Map<CharacterDTO>(character));
+            return CreatedAtAction(nameof(GetCharacters), new { id = character.CharacterId }, character);
         }
 
         // DELETE: api/Characters/5

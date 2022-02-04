@@ -1,10 +1,12 @@
-﻿namespace MovieInfoAPI.Models.Domain
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace MovieInfoAPI.Models.Domain
 {
     public class CharacterDTO
     {
-        public string Name { get; set;}
-        public string Alias { get; set;}
-        public string Gender { get; set;}
-        public string URL { get; set;}
+        public int CharacterId { get; set;}
     }
 }

@@ -8,7 +8,7 @@ namespace MovieInfoAPI.Models.Domain
     [Table("Character")]
     public class Character
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CharacterId { get; set; }
         [Required, MaxLength(50)]
         public string Name { get; set; }

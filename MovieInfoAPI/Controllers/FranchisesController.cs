@@ -27,9 +27,9 @@ namespace MovieInfoAPI.Controllers
 
         // GET: api/Franchises
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FranchiseDTO>>> GetFranchises()
+        public async Task<ActionResult<IEnumerable<Franchise>>> GetFranchises()
         {
-            return _mapper.Map<List<FranchiseDTO>>(await _context.Franchises.ToListAsync());
+            return await _context.Franchises.ToListAsync();
         }
 
         // GET: api/Franchises/5
@@ -41,7 +41,7 @@ namespace MovieInfoAPI.Controllers
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<FranchiseDTO>(franchise));
+            return Ok(franchise);
         }
 
         // PUT: api/Franchises/5
@@ -80,7 +80,7 @@ namespace MovieInfoAPI.Controllers
         {
             _context.Franchises.Add(franchise);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetFranchise", new { id = franchise.FranchiseId }, _mapper.Map<FranchiseDTO>(franchise));
+            return CreatedAtAction("GetFranchise", new { id = franchise.FranchiseId }, franchise);
         }
 
         // DELETE: api/Franchises/5
@@ -118,7 +118,7 @@ namespace MovieInfoAPI.Controllers
                     franchise.Movies.Add(movie);
                 }
             }
-            return Ok(_mapper.Map<FranchiseDTO>(franchise));
+            return Ok(franchise);
         }
 
         [HttpGet("{id}/movies")]
@@ -131,7 +131,7 @@ namespace MovieInfoAPI.Controllers
             } else
             {
                 List<Movie> movies = franchise.Movies.ToList();
-                return Ok(_mapper.Map<FranchiseDTO>(movies));
+                return Ok(movies);
             }
         }
 
@@ -150,7 +150,7 @@ namespace MovieInfoAPI.Controllers
                 {
                     characters.AddRange(movie.Characters);
                 }
-                return Ok(_mapper.Map<CharacterDTO>(characters));
+                return Ok(characters);
             }
         }
 

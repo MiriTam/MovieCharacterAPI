@@ -8,7 +8,7 @@ namespace MovieInfoAPI.Models.Domain
     [Table("Movie")]
     public class Movie
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MovieId { get; set; }
         [Required, MaxLength(250)]
         public string Title { get; set; }

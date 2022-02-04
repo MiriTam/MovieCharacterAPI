@@ -10,7 +10,7 @@ using MovieInfoAPI.Model;
 namespace MovieInfoAPI.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    [Migration("20220204093641__AddMovieCharacterRelationships")]
+    [Migration("20220204122204__AddMocieCharacterRelationships")]
     partial class _AddMovieCharacterRelationships
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
