@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieInfoAPI.Model;
 using MovieInfoAPI.Models.Domain;
+using MovieInfoAPI.Models.DTO;
 
 namespace MovieInfoAPI.Controllers
 {
@@ -15,17 +17,19 @@ namespace MovieInfoAPI.Controllers
     public class FranchisesController : ControllerBase
     {
         private readonly MovieDbContext _context;
+        private readonly IMapper _mapper;
 
-        public FranchisesController(MovieDbContext context)
+        public FranchisesController(MovieDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Franchises
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Franchise>>> GetFranchises()
+        public async Task<ActionResult<IEnumerable<FranchiseDTO>>> GetFranchises()
         {
-            return await _context.Franchises.ToListAsync();
+            return _mapper.Map<List<FranchiseDTO>>(await _context.Franchises.ToListAsync());
         }
 
         // GET: api/Franchises/5
@@ -33,13 +37,11 @@ namespace MovieInfoAPI.Controllers
         public async Task<ActionResult<Franchise>> GetFranchise(int id)
         {
             var franchise = await _context.Franchises.FindAsync(id);
-
             if (franchise == null)
             {
                 return NotFound();
             }
-
-            return franchise;
+            return Ok(_mapper.Map<FranchiseDTO>(franchise));
         }
 
         // PUT: api/Franchises/5
@@ -51,9 +53,7 @@ namespace MovieInfoAPI.Controllers
             {
                 return BadRequest();
             }
-
             _context.Entry(franchise).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -80,8 +80,7 @@ namespace MovieInfoAPI.Controllers
         {
             _context.Franchises.Add(franchise);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetFranchise", new { id = franchise.FranchiseId }, franchise);
+            return CreatedAtAction("GetFranchise", new { id = franchise.FranchiseId }, _mapper.Map<FranchiseDTO>(franchise));
         }
 
         // DELETE: api/Franchises/5
@@ -93,7 +92,6 @@ namespace MovieInfoAPI.Controllers
             {
                 return NotFound();
             }
-
             _context.Franchises.Remove(franchise);
             await _context.SaveChangesAsync();
 
@@ -120,7 +118,7 @@ namespace MovieInfoAPI.Controllers
                     franchise.Movies.Add(movie);
                 }
             }
-            return Ok(franchise);
+            return Ok(_mapper.Map<FranchiseDTO>(franchise));
         }
 
         [HttpGet("{id}/movies")]
@@ -133,7 +131,7 @@ namespace MovieInfoAPI.Controllers
             } else
             {
                 List<Movie> movies = franchise.Movies.ToList();
-                return Ok(movies);
+                return Ok(_mapper.Map<FranchiseDTO>(movies));
             }
         }
 
@@ -152,7 +150,7 @@ namespace MovieInfoAPI.Controllers
                 {
                     characters.AddRange(movie.Characters);
                 }
-                return Ok(characters);
+                return Ok(_mapper.Map<CharacterDTO>(characters));
             }
         }
 

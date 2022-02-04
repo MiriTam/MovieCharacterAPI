@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,22 +16,24 @@ namespace MovieInfoAPI.Controllers
     public class CharactersController : ControllerBase
     {
         private readonly MovieDbContext _context;
+        private readonly IMapper _mapper;
 
-        public CharactersController(MovieDbContext context)
+        public CharactersController(MovieDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Characters
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Character>>> GetCharacters()
+        public async Task<ActionResult<IEnumerable<CharacterDTO>>> GetCharacters()
         {
-            return await _context.Characters.ToListAsync();
+            return _mapper.Map<List<CharacterDTO>>(await _context.Characters.ToListAsync());
         }
 
         // GET: api/Characters/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Character>> GetCharacters(int id)
+        public async Task<ActionResult<CharacterDTO>> GetCharacters(int id)
         {
             var character = await _context.Characters.FindAsync(id);
 
@@ -39,7 +42,7 @@ namespace MovieInfoAPI.Controllers
                 return NotFound();
             }
 
-            return character;
+            return _mapper.Map<CharacterDTO>(character);
         }
 
         // PUT: api/Characters/5
@@ -68,18 +71,17 @@ namespace MovieInfoAPI.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
         // POST: api/Characters
         [HttpPost]
-        public async Task<ActionResult<Character>> PostCharacter(Character character)
+        public async Task<ActionResult<CharacterDTO>> PostCharacter(Character character)
         {
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCharacter", new { id = character.CharacterId }, character);
+            return CreatedAtAction("GetCharacter", new { id = character.CharacterId }, _mapper.Map<CharacterDTO>(character));
         }
 
         // DELETE: api/Characters/5
@@ -91,10 +93,8 @@ namespace MovieInfoAPI.Controllers
             {
                 return NotFound();
             }
-
             _context.Characters.Remove(character);
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
