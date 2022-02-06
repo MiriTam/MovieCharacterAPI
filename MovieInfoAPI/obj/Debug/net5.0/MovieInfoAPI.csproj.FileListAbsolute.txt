@@ -142,3 +142,5 @@ C:\Users\MAarag\source\repos\MovieInfoAPI\MovieInfoAPI\bin\Debug\net5.0\Microsof
 C:\Users\MAarag\source\repos\MovieInfoAPI\MovieInfoAPI\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\MAarag\source\repos\MovieInfoAPI\MovieInfoAPI\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
 C:\Users\MAarag\source\repos\MovieInfoAPI\MovieInfoAPI\bin\Debug\net5.0\Swashbuckle.AspNetCore.Newtonsoft.dll
+C:\Users\MAarag\source\repos\MovieInfoAPI\MovieInfoAPI\bin\Debug\net5.0\MovieInfoAPI.xml
+C:\Users\MAarag\source\repos\MovieInfoAPI\MovieInfoAPI\obj\Debug\net5.0\MovieInfoAPI.xml

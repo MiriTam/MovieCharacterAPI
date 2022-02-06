@@ -8,11 +8,15 @@ using Microsoft.EntityFrameworkCore;
 using MovieInfoAPI.Model;
 using MovieInfoAPI.Models.Domain;
 using MovieInfoAPI.Models.DTO.Character;
+using System.Net.Mime;
 
 namespace MovieInfoAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/characters")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class CharactersController : ControllerBase
     {
         private readonly MovieDbContext _context;
@@ -27,8 +31,7 @@ namespace MovieInfoAPI.Controllers
         /// <summary>
         /// Method fetches all characters in the database.
         /// </summary>
-        /// <returns>List of characters.</returns>
-        // GET: api/Characters
+        /// <returns>List of characters</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CharacterReadDTO>>> GetCharacters()
         {
@@ -39,9 +42,8 @@ namespace MovieInfoAPI.Controllers
         /// Method fetches the character from the database with the given id.
         /// If no character is found, the method returns a not found error.
         /// </summary>
-        /// <param name="id">Character id.</param>
-        /// <returns>Character with given id.</returns>
-        // GET: api/Characters/5
+        /// <param name="id">Character id</param>
+        /// <returns>Character object with given id</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<CharacterReadDTO>> GetCharacters(int id)
         {
@@ -58,12 +60,11 @@ namespace MovieInfoAPI.Controllers
         /// in the given character object. Returns status bad request if the 
         /// given id does not match id in the new object.
         /// </summary>
-        /// <param name="id">Id of character.</param>
+        /// <param name="id">Character id</param>
         /// <param name="character">
         /// Character object with new values.
         /// </param>
         /// <returns>No content</returns>
-        // PUT: api/Characters/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCharacter(int id, CharacterEditDTO characterDTO)
         {
@@ -95,11 +96,10 @@ namespace MovieInfoAPI.Controllers
         /// <summary>
         /// Method creates a new character record in the database.
         /// </summary>
-        /// <param name="character">New character object.</param>
+        /// <param name="character">New character object</param>
         /// <returns>Status created and new character.</returns>
-        // POST: api/Characters
         [HttpPost]
-        public async Task<ActionResult<Character>> PostCharacter(CharacterCreateDTO characterDTO)
+        public async Task<ActionResult<CharacterReadDTO>> PostCharacter(CharacterCreateDTO characterDTO)
         {
             Character character = _mapper.Map<Character>(characterDTO);
             _context.Characters.Add(character);
@@ -112,9 +112,8 @@ namespace MovieInfoAPI.Controllers
         /// the database. If id is not in database, method returns 
         /// status not found.
         /// </summary>
-        /// <param name="id">Id of character to be deleted.</param>
+        /// <param name="id">Character id</param>
         /// <returns>Status no content.</returns>
-        // DELETE: api/Characters/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCharacter(int id)
         {
@@ -132,7 +131,7 @@ namespace MovieInfoAPI.Controllers
         /// Method takes in an id and checks if there are any characters in the 
         /// database with that id.
         /// </summary>
-        /// <param name="id">Id of character.</param>
+        /// <param name="id">Character id</param>
         /// <returns>Boolean indicating if character is in database or not.</returns>
         private bool CharacterExists(int id)
         {

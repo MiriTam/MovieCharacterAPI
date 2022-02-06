@@ -12,11 +12,15 @@ using MovieInfoAPI.Models.DTO;
 using MovieInfoAPI.Models.DTO.Character;
 using MovieInfoAPI.Models.DTO.Franchise;
 using MovieInfoAPI.Models.DTO.Movie;
+using System.Net.Mime;
 
 namespace MovieInfoAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/franchises")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class FranchisesController : ControllerBase
     {
         private readonly MovieDbContext _context;
@@ -32,7 +36,6 @@ namespace MovieInfoAPI.Controllers
         /// Method fetches all franchises in the database.
         /// </summary>
         /// <returns>List of franchises.</returns>
-        // GET: api/Franchises
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FranchiseReadDTO>>> GetFranchises()
         {
@@ -43,9 +46,8 @@ namespace MovieInfoAPI.Controllers
         /// Method fetches the movie from the database with the given id.
         /// If no movie is found, the method returns the Not found error.
         /// </summary>
-        /// <param name="id">Movie id.</param>
+        /// <param name="id">Franchise id</param>
         /// <returns>Movie with given id.</returns>
-        // GET: api/Franchises/5
         [HttpGet("{id}")]
         public async Task<ActionResult<FranchiseReadDTO>> GetFranchise(int id)
         {
@@ -62,12 +64,11 @@ namespace MovieInfoAPI.Controllers
         /// in the given movie object. Returns status bad request if the 
         /// given id does not match id in the new object.
         /// </summary>
-        /// <param name="id">Id of movie.</param>
+        /// <param name="id">Franchise id.</param>
         /// <param name="movie">
         /// Movie object with new values.
         /// </param>
         /// <returns>No content</returns>
-        // PUT: api/Franchises/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFranchise(int id, FranchiseEditDTO franchiseDTO)
         {
@@ -98,9 +99,8 @@ namespace MovieInfoAPI.Controllers
         /// <summary>
         /// Method creates a new franchise record in the database.
         /// </summary>
-        /// <param name="movie">New franchise object.</param>
+        /// <param name="movie">New franchise object</param>
         /// <returns>Status created and new movie.</returns>
-        // POST: api/Franchises
         [HttpPost]
         public async Task<ActionResult<FranchiseReadDTO>> PostFranchise(FranchiseCreateDTO franchiseDTO)
         {
@@ -115,9 +115,8 @@ namespace MovieInfoAPI.Controllers
         /// the database. If id is not in database, method returns 
         /// status not found.
         /// </summary>
-        /// <param name="id">Id of franchise to be deleted.</param>
+        /// <param name="id">Franchise id</param>
         /// <returns>Status no content.</returns>
-        // DELETE: api/Franchises/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFranchise(int id)
         {
@@ -138,7 +137,7 @@ namespace MovieInfoAPI.Controllers
         /// and adds the movies to the franchise. If the ids do not match any 
         /// database records, the method returns status code not found.
         /// </summary>
-        /// <param name="id">Id of franchise.</param>
+        /// <param name="id">Franchise id</param>
         /// <param name="movieIds">Ids of movies.</param>
         /// <returns>List of movies that were added to the franchise.</returns>
         [HttpPut("{id}/movies")]
@@ -169,7 +168,7 @@ namespace MovieInfoAPI.Controllers
         /// Method takes the id of a franchise and returns a list of all the 
         /// movies that belong to that franchise.
         /// </summary>
-        /// <param name="id">Id of franchise.</param>
+        /// <param name="id">Franchise id</param>
         /// <returns>List of movies.</returns>
         [HttpGet("{id}/movies")]
         public async Task<ActionResult<IEnumerable<MovieReadDTO>>> GetMoviesInFranchise(int id)
@@ -191,7 +190,7 @@ namespace MovieInfoAPI.Controllers
         /// part of a movie, that are part of that franchise. If the id does not match 
         /// any recorded franchises, the method returns status not found.
         /// </summary>
-        /// <param name="id">Id of franchise.</param>
+        /// <param name="id">Franchise id</param>
         /// <returns>List of characters.</returns>
         [HttpGet("{id}/characters")]
         public async Task<ActionResult<IEnumerable<CharacterReadDTO>>> GetCharactersInFranchise(int id)
@@ -224,7 +223,7 @@ namespace MovieInfoAPI.Controllers
         /// Method takes in an id and checks if there are any franchises in the 
         /// database with that id.
         /// </summary>
-        /// <param name="id">Id of franchise.</param>
+        /// <param name="id">Franchise id</param>
         /// <returns>Boolean indicating if franchise is in database or not.</returns>
         private bool FranchiseExists(int id)
         {

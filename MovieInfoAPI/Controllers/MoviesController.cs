@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -9,12 +8,15 @@ using MovieInfoAPI.Model;
 using MovieInfoAPI.Models.Domain;
 using MovieInfoAPI.Models.DTO.Movie;
 using MovieInfoAPI.Models.DTO.Character;
-using System.Linq;
+using System.Net.Mime;
 
 namespace MovieInfoAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/movies")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class MoviesController : ControllerBase
     {
         private readonly MovieDbContext _context;
@@ -30,7 +32,6 @@ namespace MovieInfoAPI.Controllers
         /// Method fetches all movies in the database.
         /// </summary>
         /// <returns>List of all movies in the database.</returns>
-        // GET: api/Movies
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MovieReadDTO>>> GetMovies()
         {
@@ -41,9 +42,8 @@ namespace MovieInfoAPI.Controllers
         /// Method fetches the movie from the database with the given id.
         /// If no movie is found, the method returns the Not found error.
         /// </summary>
-        /// <param name="id">Id of movie to be fetched.</param>
+        /// <param name="id">Movie id</param>
         /// <returns>Movie with given id.</returns>
-        // GET: api/Movies/5
         [HttpGet("{id}")]
         public async Task<ActionResult<MovieReadDTO>> GetMovie(int id)
         {
@@ -62,12 +62,11 @@ namespace MovieInfoAPI.Controllers
         /// in the given movie object. Returns status bad request if the 
         /// given id does not match id in the new object.
         /// </summary>
-        /// <param name="id">Id of movie to be updated.</param>
+        /// <param name="id">Movie id</param>
         /// <param name="movie">
         /// Movie object with values used to update the movie in the database.
         /// </param>
         /// <returns>No content</returns>
-        // PUT: api/Movies/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovie(int id, MovieEditDTO movieDTO)
         {
@@ -98,9 +97,8 @@ namespace MovieInfoAPI.Controllers
         /// <summary>
         /// Method creates a new movie record in the database.
         /// </summary>
-        /// <param name="movie">Movie object to be stored.</param>
+        /// <param name="movie">New movie object</param>
         /// <returns>Status created and the new movie.</returns>
-        // POST: api/Movies
         [HttpPost]
         public async Task<ActionResult<MovieReadDTO>> PostMovie(MovieCreateDTO movieDTO)
         {
@@ -115,9 +113,8 @@ namespace MovieInfoAPI.Controllers
         /// the database. If id is not in database, method returns 
         /// status not found.
         /// </summary>
-        /// <param name="id">Id of movie to be deleted.</param>
+        /// <param name="id">Movie id</param>
         /// <returns>Status no content.</returns>
-        // DELETE: api/Movies/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovie(int id)
         {
@@ -139,8 +136,8 @@ namespace MovieInfoAPI.Controllers
         /// and adds the characters to the movie. If the ids do not match any 
         /// database records, the method returns status code not found.
         /// </summary>
-        /// <param name="id">Id of movie.</param>
-        /// <param name="characterIds">Ids of characters.</param>
+        /// <param name="id">Movie id</param>
+        /// <param name="characterIds">Character ids</param>
         /// <returns>List of characters that were added to the movie.</returns>
         [HttpPut("{id}/characters")]
         public async Task<IActionResult> AddCharactersToMovie(int id, int[] characterIds)
@@ -169,7 +166,7 @@ namespace MovieInfoAPI.Controllers
         /// Method takes the id of a movie and returns a list of all the 
         /// characters that belong to that movie.
         /// </summary>
-        /// <param name="id">Id of movie.</param>
+        /// <param name="id">Movie id</param>
         /// <returns>List of characters.</returns>
         [HttpGet("{id}/characters")]
         public async Task<ActionResult<IEnumerable<CharacterReadDTO>>> GetCharactersInMovie(int id)
@@ -190,7 +187,7 @@ namespace MovieInfoAPI.Controllers
         /// Method takes a movie id and checks if a moie with that id
         /// exists in the database.
         /// </summary>
-        /// <param name="id">Movie id.</param>
+        /// <param name="id">Movie id</param>
         /// <returns>Boolean indicating if movie is in database or not.</returns>
         private bool MovieExists(int id)
         {

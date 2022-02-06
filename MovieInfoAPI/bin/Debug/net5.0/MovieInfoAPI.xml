@@ -1,0 +1,205 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MovieInfoAPI</name>
+    </assembly>
+    <members>
+        <member name="M:MovieInfoAPI.Controllers.CharactersController.GetCharacters">
+            <summary>
+            Method fetches all characters in the database.
+            </summary>
+            <returns>List of characters</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.CharactersController.GetCharacters(System.Int32)">
+            <summary>
+            Method fetches the character from the database with the given id.
+            If no character is found, the method returns a not found error.
+            </summary>
+            <param name="id">Character id</param>
+            <returns>Character object with given id</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.CharactersController.PutCharacter(System.Int32,MovieInfoAPI.Models.DTO.Character.CharacterEditDTO)">
+            <summary>
+            Method updates the character with the given id using the values
+            in the given character object. Returns status bad request if the 
+            given id does not match id in the new object.
+            </summary>
+            <param name="id">Character id</param>
+            <param name="character">
+            Character object with new values.
+            </param>
+            <returns>No content</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.CharactersController.PostCharacter(MovieInfoAPI.Models.DTO.Character.CharacterCreateDTO)">
+            <summary>
+            Method creates a new character record in the database.
+            </summary>
+            <param name="character">New character object</param>
+            <returns>Status created and new character.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.CharactersController.DeleteCharacter(System.Int32)">
+            <summary>
+            Method deletes the character record with the given id from
+            the database. If id is not in database, method returns 
+            status not found.
+            </summary>
+            <param name="id">Character id</param>
+            <returns>Status no content.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.CharactersController.CharacterExists(System.Int32)">
+            <summary>
+            Method takes in an id and checks if there are any characters in the 
+            database with that id.
+            </summary>
+            <param name="id">Character id</param>
+            <returns>Boolean indicating if character is in database or not.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.FranchisesController.GetFranchises">
+            <summary>
+            Method fetches all franchises in the database.
+            </summary>
+            <returns>List of franchises.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.FranchisesController.GetFranchise(System.Int32)">
+            <summary>
+            Method fetches the movie from the database with the given id.
+            If no movie is found, the method returns the Not found error.
+            </summary>
+            <param name="id">Franchise id</param>
+            <returns>Movie with given id.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.FranchisesController.PutFranchise(System.Int32,MovieInfoAPI.Models.DTO.Franchise.FranchiseEditDTO)">
+            <summary>
+            Method updates the movie with the given id using the values
+            in the given movie object. Returns status bad request if the 
+            given id does not match id in the new object.
+            </summary>
+            <param name="id">Franchise id.</param>
+            <param name="movie">
+            Movie object with new values.
+            </param>
+            <returns>No content</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.FranchisesController.PostFranchise(MovieInfoAPI.Models.DTO.Franchise.FranchiseCreateDTO)">
+            <summary>
+            Method creates a new franchise record in the database.
+            </summary>
+            <param name="movie">New franchise object</param>
+            <returns>Status created and new movie.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.FranchisesController.DeleteFranchise(System.Int32)">
+            <summary>
+            Method deletes the franchise record with the given id from
+            the database. If id is not in database, method returns 
+            status not found.
+            </summary>
+            <param name="id">Franchise id</param>
+            <returns>Status no content.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.FranchisesController.AddMovieToFranchise(System.Int32,System.Int32[])">
+            <summary>
+            Method takes a franchise id and a set of movie ids of an existing franchise and
+            existing movies. Then it finds the franchise and movies in the database
+            and adds the movies to the franchise. If the ids do not match any 
+            database records, the method returns status code not found.
+            </summary>
+            <param name="id">Franchise id</param>
+            <param name="movieIds">Ids of movies.</param>
+            <returns>List of movies that were added to the franchise.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.FranchisesController.GetMoviesInFranchise(System.Int32)">
+            <summary>
+            Method takes the id of a franchise and returns a list of all the 
+            movies that belong to that franchise.
+            </summary>
+            <param name="id">Franchise id</param>
+            <returns>List of movies.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.FranchisesController.GetCharactersInFranchise(System.Int32)">
+            <summary>
+            Method takes the id of a franchise and fetches all characters that are
+            part of a movie, that are part of that franchise. If the id does not match 
+            any recorded franchises, the method returns status not found.
+            </summary>
+            <param name="id">Franchise id</param>
+            <returns>List of characters.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.FranchisesController.FranchiseExists(System.Int32)">
+            <summary>
+            Method takes in an id and checks if there are any franchises in the 
+            database with that id.
+            </summary>
+            <param name="id">Franchise id</param>
+            <returns>Boolean indicating if franchise is in database or not.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.MoviesController.GetMovies">
+            <summary>
+            Method fetches all movies in the database.
+            </summary>
+            <returns>List of all movies in the database.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.MoviesController.GetMovie(System.Int32)">
+            <summary>
+            Method fetches the movie from the database with the given id.
+            If no movie is found, the method returns the Not found error.
+            </summary>
+            <param name="id">Movie id</param>
+            <returns>Movie with given id.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.MoviesController.PutMovie(System.Int32,MovieInfoAPI.Models.DTO.Movie.MovieEditDTO)">
+            <summary>
+            Method updates the movie with the given id using the values
+            in the given movie object. Returns status bad request if the 
+            given id does not match id in the new object.
+            </summary>
+            <param name="id">Movie id</param>
+            <param name="movie">
+            Movie object with values used to update the movie in the database.
+            </param>
+            <returns>No content</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.MoviesController.PostMovie(MovieInfoAPI.Models.DTO.Movie.MovieCreateDTO)">
+            <summary>
+            Method creates a new movie record in the database.
+            </summary>
+            <param name="movie">New movie object</param>
+            <returns>Status created and the new movie.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.MoviesController.DeleteMovie(System.Int32)">
+            <summary>
+            Method deletes the movie record with the given id from
+            the database. If id is not in database, method returns 
+            status not found.
+            </summary>
+            <param name="id">Movie id</param>
+            <returns>Status no content.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.MoviesController.AddCharactersToMovie(System.Int32,System.Int32[])">
+            <summary>
+            Method takes a movie id and a set of character ids of an existing movie and
+            existing characters. Then it finds the movie and characters in the database
+            and adds the characters to the movie. If the ids do not match any 
+            database records, the method returns status code not found.
+            </summary>
+            <param name="id">Movie id</param>
+            <param name="characterIds">Character ids</param>
+            <returns>List of characters that were added to the movie.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.MoviesController.GetCharactersInMovie(System.Int32)">
+            <summary>
+            Method takes the id of a movie and returns a list of all the 
+            characters that belong to that movie.
+            </summary>
+            <param name="id">Movie id</param>
+            <returns>List of characters.</returns>
+        </member>
+        <member name="M:MovieInfoAPI.Controllers.MoviesController.MovieExists(System.Int32)">
+            <summary>
+            Method takes a movie id and checks if a moie with that id
+            exists in the database.
+            </summary>
+            <param name="id">Movie id</param>
+            <returns>Boolean indicating if movie is in database or not.</returns>
+        </member>
+    </members>
+</doc>
