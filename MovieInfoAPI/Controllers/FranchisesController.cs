@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using MovieInfoAPI.Model;
 using MovieInfoAPI.Models.Domain;
 using MovieInfoAPI.Models.DTO;
+using MovieInfoAPI.Models.DTO.Character;
+using MovieInfoAPI.Models.DTO.Franchise;
+using MovieInfoAPI.Models.DTO.Movie;
 
 namespace MovieInfoAPI.Controllers
 {
@@ -31,9 +34,9 @@ namespace MovieInfoAPI.Controllers
         /// <returns>List of franchises.</returns>
         // GET: api/Franchises
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Franchise>>> GetFranchises()
+        public async Task<ActionResult<IEnumerable<FranchiseReadDTO>>> GetFranchises()
         {
-            return await _context.Franchises.ToListAsync();
+            return _mapper.Map<List<FranchiseReadDTO>>(await _context.Franchises.ToListAsync());
         }
 
         /// <summary>
@@ -44,14 +47,14 @@ namespace MovieInfoAPI.Controllers
         /// <returns>Movie with given id.</returns>
         // GET: api/Franchises/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Franchise>> GetFranchise(int id)
+        public async Task<ActionResult<FranchiseReadDTO>> GetFranchise(int id)
         {
             var franchise = await _context.Franchises.FindAsync(id);
             if (franchise == null)
             {
                 return NotFound();
             }
-            return Ok(franchise);
+            return Ok(_mapper.Map<FranchiseReadDTO>(franchise));
         }
 
         /// <summary>
@@ -138,7 +141,7 @@ namespace MovieInfoAPI.Controllers
         /// <param name="movieIds">Ids of movies.</param>
         /// <returns>List of movies that were added to the franchise.</returns>
         [HttpPut("{id}/movies")]
-        public async Task<IActionResult> AddMovieToFranchise(int id, int[] movieIds)
+        public async Task<ActionResult<IEnumerable<MovieReadDTO>>> AddMovieToFranchise(int id, int[] movieIds)
         {
             Franchise franchise = await _context.Franchises
                 .Include(f => f.Movies).FirstOrDefaultAsync(f => f.FranchiseId == id);
@@ -158,7 +161,7 @@ namespace MovieInfoAPI.Controllers
                     franchise.Movies.Add(movie);
                 }
             }
-            return Ok(franchise.Movies);
+            return Ok(_mapper.Map<List<MovieReadDTO>>(franchise.Movies));
         }
 
         /// <summary>
@@ -168,7 +171,7 @@ namespace MovieInfoAPI.Controllers
         /// <param name="id">Id of franchise.</param>
         /// <returns>List of movies.</returns>
         [HttpGet("{id}/movies")]
-        public async Task<IActionResult> GetMoviesInFranchise(int id)
+        public async Task<ActionResult<IEnumerable<MovieReadDTO>>> GetMoviesInFranchise(int id)
         {
             Franchise franchise = await _context.Franchises
                 .Include(f => f.Movies).FirstOrDefaultAsync(f => f.FranchiseId == id);
@@ -178,7 +181,7 @@ namespace MovieInfoAPI.Controllers
             }
             else
             {
-                return Ok(franchise.Movies);
+                return Ok(_mapper.Map<List<MovieReadDTO>>(franchise.Movies));
             };
         }
 
@@ -190,7 +193,7 @@ namespace MovieInfoAPI.Controllers
         /// <param name="id">Id of franchise.</param>
         /// <returns>List of characters.</returns>
         [HttpGet("{id}/characters")]
-        public async Task<IActionResult> GetCharactersInFranchise(int id)
+        public async Task<ActionResult<IEnumerable<CharacterReadDTO>>> GetCharactersInFranchise(int id)
         {
             Franchise franchise = await _context.Franchises
                 .Include(f => f.Movies).ThenInclude(m => m.Characters)
@@ -206,7 +209,7 @@ namespace MovieInfoAPI.Controllers
                 {
                     characters.AddRange(movie.Characters);
                 }
-                return Ok(characters);
+                return Ok(_mapper.Map<List<CharacterReadDTO>>(characters));
             }
         }
 

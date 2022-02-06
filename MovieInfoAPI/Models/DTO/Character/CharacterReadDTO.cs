@@ -1,4 +1,4 @@
-﻿namespace MovieInfoAPI.Models.Domain
+﻿namespace MovieInfoAPI.Models.DTO.Character
 {
     public class CharacterReadDTO
     {

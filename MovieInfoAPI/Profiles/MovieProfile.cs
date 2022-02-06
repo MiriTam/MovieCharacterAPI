@@ -9,13 +9,16 @@ namespace MovieInfoAPI.Profiles
         public MovieProfile()
         {
             CreateMap<Movie, MovieReadDTO>()
-                .ForMember(dto => dto.Franchise, opt => opt.MapFrom(movie => movie.FranchiseId)).ReverseMap();
+                .ForMember(dto => dto.Franchise, opt => opt.MapFrom(movie => movie.FranchiseId))
+                .ReverseMap();
 
             CreateMap<Movie, MovieCreateDTO>()
-                .ForMember(dto => dto.Franchise, opt => opt.MapFrom(movie => movie.FranchiseId)).ReverseMap();
+                .ForMember(dto => dto.Franchise, opt => opt.MapFrom(movie => movie.FranchiseId))
+                .ReverseMap();
 
             CreateMap<Movie, MovieEditDTO>()
-                .ForMember(dto => dto.Franchise, opt => opt.MapFrom(movie => movie.FranchiseId)).ReverseMap();
+                .ForMember(dto => dto.Franchise, opt => opt.MapFrom(movie => movie.FranchiseId))
+                .ReverseMap();
         }
     }
 }

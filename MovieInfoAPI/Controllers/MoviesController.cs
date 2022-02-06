@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieInfoAPI.Model;
@@ -69,13 +68,12 @@ namespace MovieInfoAPI.Controllers
         /// <returns>No content</returns>
         // PUT: api/Movies/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMovie(int id, MovieEditDTO movieDTO)
+        public async Task<IActionResult> PutMovie(int id, Movie movie)
         {
-            if (id != movieDTO.MovieId)
+            if (id != movie.MovieId)
             {
                 return BadRequest();
             }
-            Movie movie = _mapper.Map<Movie>(movieDTO);
             _context.Entry(movie).State = EntityState.Modified;
             try
             {
@@ -102,9 +100,8 @@ namespace MovieInfoAPI.Controllers
         /// <returns>Status created and the new movie.</returns>
         // POST: api/Movies
         [HttpPost]
-        public async Task<ActionResult<MovieReadDTO>> PostMovie(MovieCreateDTO movieDTO)
+        public async Task<ActionResult<MovieReadDTO>> PostMovie(Movie movie)
         {
-            Movie movie = _mapper.Map<Movie>(movieDTO);
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetMovie", new { id = movie.MovieId }, _mapper.Map<MovieReadDTO>(movie));

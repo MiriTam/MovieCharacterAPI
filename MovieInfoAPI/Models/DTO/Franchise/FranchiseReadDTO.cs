@@ -1,4 +1,4 @@
-﻿namespace MovieInfoAPI.Models.DTO
+﻿namespace MovieInfoAPI.Models.DTO.Franchise
 {
     public class FranchiseReadDTO
     {
