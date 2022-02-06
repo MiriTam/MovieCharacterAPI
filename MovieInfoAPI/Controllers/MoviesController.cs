@@ -9,6 +9,7 @@ using MovieInfoAPI.Model;
 using MovieInfoAPI.Models.Domain;
 using MovieInfoAPI.Models.DTO.Movie;
 using MovieInfoAPI.Models.DTO.Character;
+using System.Linq;
 
 namespace MovieInfoAPI.Controllers
 {
@@ -33,7 +34,7 @@ namespace MovieInfoAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MovieReadDTO>>> GetMovies()
         {
-            return _mapper.Map<List<MovieReadDTO>>(await _context.Movies.ToListAsync());
+            return _mapper.Map<List<MovieReadDTO>>(await _context.Movies.Include(m => m.Characters).ToListAsync());
         }
 
         /// <summary>
@@ -46,7 +47,7 @@ namespace MovieInfoAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<MovieReadDTO>> GetMovie(int id)
         {
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await _context.Movies.Include(m => m.Characters).FirstOrDefaultAsync(m => m.MovieId == id);
 
             if (movie == null)
             {
@@ -140,7 +141,7 @@ namespace MovieInfoAPI.Controllers
         /// <param name="characterIds">Ids of characters.</param>
         /// <returns>List of characters that were added to the movie.</returns>
         [HttpPut("{id}/characters")]
-        public async Task<IActionResult> AddCharacterToMovie(int id, int[] characterIds)
+        public async Task<IActionResult> AddCharactersToMovie(int id, int[] characterIds)
         {
             Movie movie = await _context.Movies
                 .Include(m => m.Characters).FirstOrDefaultAsync(m => m.MovieId ==id);
