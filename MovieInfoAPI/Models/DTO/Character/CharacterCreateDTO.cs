@@ -1,6 +1,6 @@
-﻿namespace MovieInfoAPI.Models.Domain
+﻿namespace MovieInfoAPI.Models.DTO.Character
 {
-    public class CharacterDTO
+    public class CharacterCreateDTO
     {
         public string Name { get; set; }
         public string Alias { get; set; }

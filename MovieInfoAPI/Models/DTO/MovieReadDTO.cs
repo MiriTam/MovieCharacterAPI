@@ -1,6 +1,6 @@
 ﻿namespace MovieInfoAPI.Models.DTO
 {
-    public class MovieDTO
+    public class MovieReadDTO
     {
         public string Title { get; set; }
         public string Genre { get; set; }

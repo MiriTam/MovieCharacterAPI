@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieInfoAPI.Model;
 using MovieInfoAPI.Models.Domain;
+using MovieInfoAPI.Models.DTO.Character;
 
 namespace MovieInfoAPI.Controllers
 {
@@ -30,9 +31,9 @@ namespace MovieInfoAPI.Controllers
         /// <returns>List of characters.</returns>
         // GET: api/Characters
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Character>>> GetCharacters()
+        public async Task<ActionResult<IEnumerable<CharacterReadDTO>>> GetCharacters()
         {
-            return await _context.Characters.ToListAsync();
+            return _mapper.Map<List<CharacterReadDTO>>(await _context.Characters.ToListAsync());
         }
 
         /// <summary>
@@ -43,14 +44,14 @@ namespace MovieInfoAPI.Controllers
         /// <returns>Character with given id.</returns>
         // GET: api/Characters/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Character>> GetCharacters(int id)
+        public async Task<ActionResult<CharacterReadDTO>> GetCharacters(int id)
         {
             var character = await _context.Characters.FindAsync(id);
             if (character == null)
             {
                 return NotFound();
             }
-            return character;
+            return _mapper.Map<CharacterReadDTO>(character);
         }
 
         /// <summary>
@@ -65,12 +66,14 @@ namespace MovieInfoAPI.Controllers
         /// <returns>No content</returns>
         // PUT: api/Characters/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCharacter(int id, Character character)
+        public async Task<IActionResult> PutCharacter(int id, CharacterEditDTO characterDTO)
         {
-            if (id != character.CharacterId)
+            if (id != characterDTO.CharacterId)
             {
                 return BadRequest();
             }
+            // Map DTO input to domain object
+            Character character = _mapper.Map<Character>(characterDTO);
             _context.Entry(character).State = EntityState.Modified;
             try
             {
@@ -97,11 +100,12 @@ namespace MovieInfoAPI.Controllers
         /// <returns>Status created and new character.</returns>
         // POST: api/Characters
         [HttpPost]
-        public async Task<ActionResult<Character>> PostCharacter(Character character)
+        public async Task<ActionResult<Character>> PostCharacter(CharacterCreateDTO characterDTO)
         {
+            Character character = _mapper.Map<Character>(characterDTO);
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetCharacters), new { id = character.CharacterId }, character);
+            return CreatedAtAction(nameof(GetCharacters), new { id = character.CharacterId }, _mapper.Map<CharacterReadDTO>(character));
         }
 
         /// <summary>
