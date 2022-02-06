@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieInfoAPI.Model;
 using MovieInfoAPI.Models.Domain;
-using MovieInfoAPI.Models.DTO;
+using MovieInfoAPI.Models.DTO.Movie;
+using MovieInfoAPI.Models.DTO.Character;
 
 namespace MovieInfoAPI.Controllers
 {
@@ -31,9 +32,9 @@ namespace MovieInfoAPI.Controllers
         /// <returns>List of all movies in the database.</returns>
         // GET: api/Movies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
+        public async Task<ActionResult<IEnumerable<MovieReadDTO>>> GetMovies()
         {
-            return await _context.Movies.ToListAsync();
+            return _mapper.Map<List<MovieReadDTO>>(await _context.Movies.ToListAsync());
         }
 
         /// <summary>
@@ -44,7 +45,7 @@ namespace MovieInfoAPI.Controllers
         /// <returns>Movie with given id.</returns>
         // GET: api/Movies/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Movie>> GetMovie(int id)
+        public async Task<ActionResult<MovieReadDTO>> GetMovie(int id)
         {
             var movie = await _context.Movies.FindAsync(id);
 
@@ -53,7 +54,7 @@ namespace MovieInfoAPI.Controllers
                 return NotFound();
             }
 
-            return movie;
+            return _mapper.Map<MovieReadDTO>(movie);
         }
 
         /// <summary>
@@ -68,15 +69,14 @@ namespace MovieInfoAPI.Controllers
         /// <returns>No content</returns>
         // PUT: api/Movies/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMovie(int id, Movie movie)
+        public async Task<IActionResult> PutMovie(int id, MovieEditDTO movieDTO)
         {
-            if (id != movie.MovieId)
+            if (id != movieDTO.MovieId)
             {
                 return BadRequest();
             }
-
+            Movie movie = _mapper.Map<Movie>(movieDTO);
             _context.Entry(movie).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -102,11 +102,12 @@ namespace MovieInfoAPI.Controllers
         /// <returns>Status created and the new movie.</returns>
         // POST: api/Movies
         [HttpPost]
-        public async Task<ActionResult<Movie>> PostMovie(Movie movie)
+        public async Task<ActionResult<MovieReadDTO>> PostMovie(MovieCreateDTO movieDTO)
         {
+            Movie movie = _mapper.Map<Movie>(movieDTO);
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetMovie", new { id = movie.MovieId }, movie);
+            return CreatedAtAction("GetMovie", new { id = movie.MovieId }, _mapper.Map<MovieReadDTO>(movie));
         }
 
         /// <summary>
@@ -161,7 +162,7 @@ namespace MovieInfoAPI.Controllers
                     movie.Characters.Add(character);
                 }
             }
-            return Ok(movie.Characters);
+            return Ok(_mapper.Map<List<CharacterReadDTO>>(movie.Characters));
         }
 
         /// <summary>
@@ -171,7 +172,7 @@ namespace MovieInfoAPI.Controllers
         /// <param name="id">Id of movie.</param>
         /// <returns>List of characters.</returns>
         [HttpGet("{id}/characters")]
-        public async Task<ActionResult<Movie>> GetCharactersInMovie(int id)
+        public async Task<ActionResult<IEnumerable<CharacterReadDTO>>> GetCharactersInMovie(int id)
         {
             Movie movie = await _context.Movies
                 .Include(m => m.Characters).FirstOrDefaultAsync(m => m.MovieId == id);
@@ -181,7 +182,7 @@ namespace MovieInfoAPI.Controllers
             }
             else
             {
-                return Ok(movie.Characters);
+                return Ok(_mapper.Map<List<CharacterReadDTO>>(movie.Characters));
             }
         }
 
