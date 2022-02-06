@@ -69,12 +69,13 @@ namespace MovieInfoAPI.Controllers
         /// <returns>No content</returns>
         // PUT: api/Franchises/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFranchise(int id, Franchise franchise)
+        public async Task<IActionResult> PutFranchise(int id, FranchiseEditDTO franchiseDTO)
         {
-            if (id != franchise.FranchiseId)
+            if (id != franchiseDTO.FranchiseId)
             {
                 return BadRequest();
             }
+            Franchise franchise = _mapper.Map<Franchise>(franchiseDTO);
             _context.Entry(franchise).State = EntityState.Modified;
             try
             {
@@ -91,7 +92,6 @@ namespace MovieInfoAPI.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
@@ -102,11 +102,12 @@ namespace MovieInfoAPI.Controllers
         /// <returns>Status created and new movie.</returns>
         // POST: api/Franchises
         [HttpPost]
-        public async Task<ActionResult<Franchise>> PostFranchise(Franchise franchise)
+        public async Task<ActionResult<FranchiseReadDTO>> PostFranchise(FranchiseCreateDTO franchiseDTO)
         {
+            Franchise franchise = _mapper.Map<Franchise>(franchiseDTO);
             _context.Franchises.Add(franchise);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetFranchise", new { id = franchise.FranchiseId }, franchise);
+            return CreatedAtAction("GetFranchise", new { id = franchise.FranchiseId }, _mapper.Map<FranchiseReadDTO>(franchise));
         }
 
         /// <summary>

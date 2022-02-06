@@ -9,6 +9,10 @@ namespace MovieInfoAPI.Profiles
         public FranchiseProfile()
         {
             CreateMap<Franchise, FranchiseReadDTO>().ReverseMap();
+
+            CreateMap<Franchise, FranchiseCreateDTO>().ReverseMap();
+
+            CreateMap<Franchise, FranchiseEditDTO>().ReverseMap();
         }
     }
 }
