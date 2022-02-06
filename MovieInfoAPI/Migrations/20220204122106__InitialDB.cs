@@ -48,17 +48,11 @@ namespace MovieInfoAPI.Migrations
                     Director = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Picture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Trailer = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FranchiseId = table.Column<int>(type: "int", nullable: false)
+                    FranchiseId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Movie", x => x.MovieId);
-                    table.ForeignKey(
-                        name: "FK_Movie_Franchise_FranchiseId",
-                        column: x => x.FranchiseId,
-                        principalTable: "Franchise",
-                        principalColumn: "FranchiseId",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

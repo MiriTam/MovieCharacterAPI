@@ -175,7 +175,7 @@ namespace MovieInfoAPI.Controllers
         public async Task<ActionResult<IEnumerable<MovieReadDTO>>> GetMoviesInFranchise(int id)
         {
             Franchise franchise = await _context.Franchises
-                .Include(f => f.Movies).FirstOrDefaultAsync(f => f.FranchiseId == id);
+                .Include(f => f.Movies).ThenInclude(m => m.Characters).FirstOrDefaultAsync(f => f.FranchiseId == id);
             if (franchise == null)
             {
                 return NotFound();
@@ -208,7 +208,13 @@ namespace MovieInfoAPI.Controllers
                 List<Character> characters = new List<Character>();
                 foreach (Movie movie in movies)
                 {
-                    characters.AddRange(movie.Characters);
+                    foreach (Character character in movie.Characters)
+                    {
+                        if (!characters.Contains(character))
+                        {
+                            characters.Add(character);
+                        }
+                    }
                 }
                 return Ok(_mapper.Map<List<CharacterReadDTO>>(characters));
             }

@@ -17,6 +17,11 @@ namespace MovieInfoAPI.Profiles
                           .MapFrom(movie => movie.FranchiseId))
                 .ReverseMap();
 
+            CreateMap<Movie, MovieCreateDTO>()
+                .ReverseMap();
+
+            CreateMap<Movie, MovieEditDTO>()
+                .ReverseMap();
         }
     }
 }
